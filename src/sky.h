@@ -81,6 +81,7 @@ private:
 	u16 m_star_indices[SKY_STAR_COUNT*4];
 	video::S3DVertex m_star_vertices[SKY_STAR_COUNT*4];
 	Client *m_client;
+	scene::IAnimatedMeshSceneNode *m_sky_sphere;
 };
 
 #endif

@@ -44,22 +44,21 @@ Sky::Sky(scene::ISceneNode* parent, scene::ISceneManager* mgr, s32 id, Client *c
 	//mat.BackfaceCulling = false;
 	
 	scene::IAnimatedMesh *mesh;
-	scene::IAnimatedMeshSceneNode *sky_sphere;
-	mesh = mgr->getMesh("skydome.x");
-	sky_sphere = mgr->addAnimatedMeshSceneNode(mesh, NULL);
+	mesh = mgr->getMesh("sky_sphere.x");
+	m_sky_sphere = mgr->addAnimatedMeshSceneNode(mesh, NULL);
 	mesh->drop();
-	sky_sphere->animateJoints();
-	sky_sphere->setFrameLoop(0, 249);
-	sky_sphere->setAnimationSpeed(1);
-	sky_sphere->setPosition(v3f(0,400,0));
-	sky_sphere->setScale(v3f(10,10,10));
-	u8 li = 200;
-	setMeshColor(sky_sphere->getMesh(), video::SColor(255,li,li,li));
-	sky_sphere->setMaterialFlag(video::EMF_LIGHTING, false);
-	sky_sphere->setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
-	sky_sphere->setMaterialFlag(video::EMF_FOG_ENABLE, false);
-	sky_sphere->setMaterialFlag(video::EMF_BACK_FACE_CULLING, false);
-	sky_sphere->setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL);
+	m_sky_sphere->animateJoints();
+	m_sky_sphere->setFrameLoop(1, 250);
+	m_sky_sphere->setAnimationSpeed(0);
+	m_sky_sphere->setPosition(v3f(0,400,0));
+	m_sky_sphere->setScale(v3f(10,10,10));
+	u8 li = 255;
+	setMeshColor(m_sky_sphere->getMesh(), video::SColor(255,li,li,li));
+	m_sky_sphere->setMaterialFlag(video::EMF_LIGHTING, false);
+	m_sky_sphere->setMaterialFlag(video::EMF_BILINEAR_FILTER, false);
+	m_sky_sphere->setMaterialFlag(video::EMF_FOG_ENABLE, false);
+	m_sky_sphere->setMaterialFlag(video::EMF_BACK_FACE_CULLING, false);
+	m_sky_sphere->setMaterialType(video::EMT_TRANSPARENT_ALPHA_CHANNEL);
 	
 	//video::E_MATERIAL_TYPE sky_shader = m_client->getShaderSource()->getShader("test_shader_4").material;
 	//sky_sphere->setMaterialType(sky_shader);
@@ -110,6 +109,8 @@ void Sky::render()
 	;
 
 	ScopeProfiler sp(g_profiler, "Sky::render()", SPT_AVG);
+	
+	m_sky_sphere->setCurrentFrame ((int)m_time_of_day*250);
 	m_sunpos.Y = sin((m_time_of_day/(2*3.14159)));
 	// draw perspective skybox
 
